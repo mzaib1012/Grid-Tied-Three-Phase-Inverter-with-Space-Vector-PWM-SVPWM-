@@ -23,13 +23,38 @@ To overcome these constraints, this project implements a custom **Space Vector P
 | :--- | :--- | :--- |
 | **Reference Voltage Vector** | $\vec{V}_{ref}$ | Rotating $\alpha\beta$-frame |
 | **DC-Bus Voltage Utilization** | $\frac{V_{max\_line}}{V_{dc}}$ | $\approx 90.6\%$ (Theoretical Limit) |
-| **Target Total Harmonic Distortion** | $THD_I$ | $< 3.0\%$ (IEEE 519 Compliant) |
+| **Target Total Harmonic Distortion** | $THD_I$ | < 3.0% (IEEE 519 Compliant) |
 
 ---
 
 ## ⚡ Mathematical Topology & Control Architecture
 
-The simulation engine models the complete electro-mechanical and algorithmic stackup:
-1. **Clarke Transformation:** Converting three-phase balanced stationary quantities ($V_a, V_b, V_c$) into the stationary orthogonal two-axis reference frame ($V_\alpha, V_\beta$).
+The simulation engine models the complete control stackup:
+1. **Clarke Transformation:** Converting stationary three-phase balanced quantities ($V_a, V_b, V_c$) into the stationary orthogonal two-axis reference frame ($V_\alpha, V_\beta$).
 2. **Sector Identification:** Calculating the instantaneous angle $\theta$ of the rotating space vector to isolate which of the 6 active voltage sectors it resides in.
-3. **Dwell Time Calculus:** Computing the exact timing matrix for the two adjacent active space vectors ($T_1, T_2$) and the zero vector ($T_0$) to synthetically construct the target voltage circle.
+3. **Dwell Time Calculus:** Computing the exact timing matrix for the two adjacent active space vectors ($T_1, T_2$) and the zero vector ($T_0$) to synthetically construct the target voltage vector circle.
+
+---
+
+## 📈 Simulation Results & Waveform Analysis
+
+### 1. Space Vector Hexagram Plane Map
+The spatial mapping verifies that the reference voltage vector ($\vec{V}_{ref}$) remains bounded completely within the linear modulation inscribing circle ($V_{dc}/\sqrt{3}$), ensuring stable linear operation without dropping into over-modulation clipping.
+
+<p align="center">
+  <img src="svpwm_vector_sectors.png" width="550" alt="SVPWM Vector Plane Mapping">
+</p>
+
+### 2. Saddle-Back Gating Duty Cycles
+The transient waveforms demonstrate the exact "saddle-back" (double-hump) profile characteristic of premium high-performance SVPWM implementations. By naturally injecting a third-harmonic common-mode component programmatically, the fundamental phase voltage peak is safely boosted without saturating the physical hardware components.
+
+<p align="center">
+  <img src="svpwm_modulation_waveforms.png" width="750" alt="SVPWM Transient Modulation Profiles">
+</p>
+
+---
+
+## 🛠️ Key Takeaways for Portfolio Evaluation
+* **Hardware-less Optimization:** Demonstrates proficiency in converting complex electromagnetic and coordinate-transformation theory into optimized software execution scripts without reliance on rigid black-box graphical layout software.
+* **Harmonic Control:** Addresses industrial grid standard considerations directly by mitigating low-order harmonics through symmetric 7-segment switching patterns.
+* **Advanced Vector Control Foundations:** Validates a rigorous baseline architecture for developing closed-loop Field-Oriented Control (FOC) algorithms in commercial motor drives and active front-end grid systems.
